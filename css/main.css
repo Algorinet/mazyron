@@ -1,0 +1,38 @@
+html,
+body {
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+
+
+#titulo {
+  margin-top: 2%;
+  text-align: center;
+  background: red;
+}
+
+#puntuacion {
+  display: none;
+  background: blue;
+}
+
+#puntuacion ul li {
+  text-align: center;
+}
+
+span {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+#juego {
+  text-align: center;
+}
+
+#canvas {
+  background-image: url("../textures/jaen-madera.png");
+}
