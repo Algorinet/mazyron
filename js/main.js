@@ -24,7 +24,7 @@ var moveLeft = false;
 var isGravity = true;
 var vy = Math.random() * -10 - 5;
 
-window.onload = function() {
+window.onload = function () {
   setup();
 };
 
@@ -33,7 +33,7 @@ function setup() {
   ctx = canvas.getContext("2d");
   document.onkeydown = handlerDown;
   document.onkeyup = handlerUp;
-  window.onresize = function() {
+  window.onresize = function () {
     setCanvasDimensions();
   };
 
@@ -60,6 +60,7 @@ function startGame() {
   gameLoop();
   createObsH();
   createObsV();
+  createBHoles();
 }
 
 function gameLoop() {
@@ -74,6 +75,7 @@ function gameLoop() {
   drawObsV();
   moveObsH();
   moveObsV();
+  drawBHoles();
 }
 
 /* GAMEBOARD */
@@ -125,7 +127,6 @@ function moveBall() {
   if (y < h - 30) {
     gravity = gravity += 0.02;
     y += gravity;
-    console.log(y);
   }
   if (gravity < 0.8 || y > 570) {
     if (pressedLeft && x > 30 && moveLeft) {
@@ -188,10 +189,10 @@ var arrayObstH = [];
 
 function createObsH() {
   var posObstY = 60;
-  for (i = 0; i < 7; i++) {
+  for (i = 0; i < 5; i++) {
     arrayObstH.push(new ObstH(randomPos(0, w - 350), posObstY));
     posObstY = arrayObstH[i].y;
-    posObstY += 80;
+    posObstY += 110;
     //debugger
   }
   console.log(arrayObstH[0]);
@@ -230,11 +231,10 @@ var arrayObstV = [];
 
 function createObsV() {
   var posObstX = 60;
-  for (i = 0; i < 6; i++) {
-    arrayObstV.push(new ObstV(posObstX, randomPos(0, 350)));
+  for (i = 0; i < 5; i++) {
+    arrayObstV.push(new ObstV(posObstX, randomPos(100, 350)));
     posObstX = arrayObstV[i].x;
-    posObstX += 95;
-    //debugger
+    posObstX += 120;
     console.log(arrayObstV[i]);
   }
 }
@@ -245,6 +245,58 @@ function drawObsV() {
   });
 }
 
+/* BLACK HOLES */
+class bHoles {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.r = 20;
+    this.startAngle = 0;
+    this.endAngle = Math.PI * 2;
+  }
+  drawBH() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, this.startAngle, this.endAngle);
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "brownsmoke";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
+function randomPos(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+var arrayBlackH = [];
+
+function createBHoles() {
+  var arrayPosX = [120, 240, 360, 480]
+  var numXaleatorio = parseInt(Math.random() * arrayPosX.length)
+  var arrayPosY = [120, 230, 340, 450, 540];
+  var numYaleatorio = parseInt(Math.random() * arrayPosY.length)
+  var posX = arrayPosX[numXaleatorio]
+  var posY = arrayPosY[numYaleatorio]
+
+  for (i = 0; i < 5; i++) {
+    var arrayPosX = [120, 240, 360, 480]
+    var numXaleatorio = parseInt(Math.random() * arrayPosX.length)
+    var arrayPosY = [120, 230, 340, 450, 540];
+    var numYaleatorio = parseInt(Math.random() * arrayPosY.length)
+    var posX = arrayPosX[numXaleatorio]
+    var posY = arrayPosY[numYaleatorio]
+    arrayBlackH.push(new bHoles(posX, posY));
+  }
+}
+
+function drawBHoles() {
+  arrayBlackH.forEach(hole => {
+    hole.drawBH();
+  });
+}
+
 /* COLLISIONS */
 function moveObsH() {
   arrayObstH.forEach(obstH => {
@@ -252,6 +304,7 @@ function moveObsH() {
     collisionH(obstH.x, obstH.y, obstH.w, obstH.h);
   });
 }
+
 function moveObsV() {
   arrayObstV.forEach(obstV => {
     //obshV.move()
