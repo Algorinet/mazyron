@@ -57,10 +57,10 @@ function startGame() {
 
   x = w2;
   y = h2 / 8;
-  gameLoop();
   createObsH();
   createObsV();
   createBHoles();
+  gameLoop();
 }
 
 function gameLoop() {
@@ -76,6 +76,7 @@ function gameLoop() {
   moveObsH();
   moveObsV();
   drawBHoles();
+  distant();
 }
 
 /* GAMEBOARD */
@@ -114,7 +115,7 @@ function drawWalls() {
 
 function drawBall() {
   ctx.beginPath();
-  ctx.arc(x, y, 10, 0, Math.PI * 2);
+  ctx.arc(x, y, 15, 0, Math.PI * 2);
   ctx.fillStyle = "white";
   ctx.strokeStyle = "brownsmoke";
   ctx.lineWidth = 5;
@@ -273,21 +274,17 @@ function randomPos(min, max) {
 var arrayBlackH = [];
 
 function createBHoles() {
-  var arrayPosX = [120, 240, 360, 480]
-  var numXaleatorio = parseInt(Math.random() * arrayPosX.length)
-  var arrayPosY = [120, 230, 340, 450, 540];
-  var numYaleatorio = parseInt(Math.random() * arrayPosY.length)
-  var posX = arrayPosX[numXaleatorio]
-  var posY = arrayPosY[numYaleatorio]
+
 
   for (i = 0; i < 5; i++) {
     var arrayPosX = [120, 240, 360, 480]
     var numXaleatorio = parseInt(Math.random() * arrayPosX.length)
-    var arrayPosY = [120, 230, 340, 450, 540];
+    var arrayPosY = [150, 260, 370, 480, 570];
     var numYaleatorio = parseInt(Math.random() * arrayPosY.length)
     var posX = arrayPosX[numXaleatorio]
     var posY = arrayPosY[numYaleatorio]
     arrayBlackH.push(new bHoles(posX, posY));
+
   }
 }
 
@@ -335,4 +332,24 @@ function collisionV(xObs, yObs, wObs, hObs) {
   } else if (x > xObs - 80 + wObs) {
     moveLeft = true;
   }
+}
+
+/* COLLISION BALL AND HOLES */
+function distant() {
+  var p1x = x;
+  var p1y = parseInt(y);
+  arrayBlackH.forEach(bHole => {
+    var p2x = bHole.x
+    var p2y = bHole.y
+    var d = parseInt(Math.sqrt(Math.pow((p2x - p1x), 2) + Math.pow((p2y - p1y), 2)));
+    //console.log(d)
+    if (d < 20) {
+      console.log(true)
+    }
+
+  });
+
+
+
+
 }
