@@ -23,8 +23,11 @@ var moveRight = false;
 var moveLeft = false;
 var isGravity = true;
 var vy = Math.random() * -10 - 5;
+var dx = 0.3;
+var dy = 0.3;
+var vy = Math.random() * -10 - 5;
 
-window.onload = function () {
+window.onload = function() {
   setup();
 };
 
@@ -33,7 +36,7 @@ function setup() {
   ctx = canvas.getContext("2d");
   document.onkeydown = handlerDown;
   document.onkeyup = handlerUp;
-  window.onresize = function () {
+  window.onresize = function() {
     setCanvasDimensions();
   };
 
@@ -76,7 +79,7 @@ function gameLoop() {
   moveObsH();
   moveObsV();
   drawBHoles();
-  distant();
+  distantBall();
 }
 
 /* GAMEBOARD */
@@ -125,11 +128,11 @@ function drawBall() {
 }
 
 function moveBall() {
-  if (y < h - 30) {
+  if (y < h - 40) {
     gravity = gravity += 0.02;
     y += gravity;
   }
-  if (gravity < 0.8 || y > 570) {
+  if (gravity < 0.8 || y > 550) {
     if (pressedLeft && x > 30 && moveLeft) {
       ballVx += ballAceleracion;
       x -= ballVx;
@@ -161,6 +164,11 @@ function handlerUp(e) {
   }
 }
 
+/* CALCULO DISTANCIA */
+function calcDistant(p1x, p2x, p1y, p2y) {
+  return parseInt(Math.sqrt(Math.pow(p2x - p1x, 2) + Math.pow(p2y - p1y, 2)));
+}
+
 /* HORIZONTAL OBS */
 class ObstH {
   constructor(x, y) {
@@ -178,8 +186,19 @@ class ObstH {
     ctx.fill();
     ctx.closePath();
   }
-  move() {
-    this.y;
+  moveH() {
+    this.x += dx;
+    for (i = 0; i < arrayObstH.length; i++) {
+      if (i % 2 == 0) {
+        arrayObstH[i].x -= dx;
+      }
+    }
+    if (this.x + this.w > w - 20) {
+      dx = -dx;
+    }
+    if (this.x < 20) {
+      dx = -dx;
+    }
   }
 }
 
@@ -221,6 +240,9 @@ class ObstV {
     ctx.rect(this.x, this.y, this.w, this.h);
     ctx.fill();
     ctx.closePath();
+  }
+  moveV() {
+    this.y++;
   }
 }
 
@@ -274,17 +296,14 @@ function randomPos(min, max) {
 var arrayBlackH = [];
 
 function createBHoles() {
-
-
   for (i = 0; i < 5; i++) {
-    var arrayPosX = [120, 240, 360, 480]
-    var numXaleatorio = parseInt(Math.random() * arrayPosX.length)
-    var arrayPosY = [150, 260, 370, 480, 570];
-    var numYaleatorio = parseInt(Math.random() * arrayPosY.length)
-    var posX = arrayPosX[numXaleatorio]
-    var posY = arrayPosY[numYaleatorio]
+    var arrayPosX = [120, 240, 360, 480];
+    var numXaleatorio = parseInt(Math.random() * arrayPosX.length);
+    var arrayPosY = [150, 260, 370, 480, 560];
+    var numYaleatorio = parseInt(Math.random() * arrayPosY.length);
+    var posX = arrayPosX[numXaleatorio];
+    var posY = arrayPosY[numYaleatorio];
     arrayBlackH.push(new bHoles(posX, posY));
-
   }
 }
 
@@ -297,14 +316,14 @@ function drawBHoles() {
 /* COLLISIONS */
 function moveObsH() {
   arrayObstH.forEach(obstH => {
-    //obsH.move()
+    obstH.moveH();
     collisionH(obstH.x, obstH.y, obstH.w, obstH.h);
   });
 }
 
 function moveObsV() {
   arrayObstV.forEach(obstV => {
-    //obshV.move()
+    //obshV.move();
     collisionV(obstV.x, obstV.y, obstV.w, obstV.h);
   });
 }
@@ -335,21 +354,28 @@ function collisionV(xObs, yObs, wObs, hObs) {
 }
 
 /* COLLISION BALL AND HOLES */
-function distant() {
+function distantBall() {
   var p1x = x;
   var p1y = parseInt(y);
   arrayBlackH.forEach(bHole => {
-    var p2x = bHole.x
-    var p2y = bHole.y
-    var d = parseInt(Math.sqrt(Math.pow((p2x - p1x), 2) + Math.pow((p2y - p1y), 2)));
-    //console.log(d)
-    if (d < 20) {
-      console.log(true)
+    var p2x = bHole.x;
+    var p2y = bHole.y;
+    var distancia = calcDistant(p1x, p2x, p1y, p2y);
+    if (distancia < 20) {
+      cancelAnimationFrame(frameID);
+      gameOver();
     }
-
   });
+}
 
-
-
-
+/* GAME OVER */
+function gameOver() {
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.rect(0, 0, w, h);
+  ctx.fill();
+  ctx.closePath();
+  // createText();
+  //createScore();
+  //finalScore();
 }
