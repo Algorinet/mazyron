@@ -15,7 +15,7 @@ var wallX = 300;
 var wallY = 50;
 var ballVx = 0;
 var ballAceleracion = 0.05;
-var gravity = -0.8;
+var gravity = 0.8;
 var posObstY = 250;
 var img = new Image();
 img.src = "./../textures/jaen-madera.png";
@@ -27,7 +27,7 @@ var dx = 0.3;
 var dy = 0.3;
 var vy = Math.random() * -10 - 5;
 
-window.onload = function() {
+window.onload = function () {
   setup();
 };
 
@@ -36,7 +36,7 @@ function setup() {
   ctx = canvas.getContext("2d");
   document.onkeydown = handlerDown;
   document.onkeyup = handlerUp;
-  window.onresize = function() {
+  window.onresize = function () {
     setCanvasDimensions();
   };
 
@@ -54,26 +54,27 @@ function setCanvasDimensions() {
 }
 
 function startGame() {
+  ctx.save()
   document.querySelector("#start").style.display = "none";
   document.querySelector("#puntuacion").style.display = "block";
   setCanvasDimensions();
-
   x = w2;
   y = h2 / 8;
   createObsH();
   createObsV();
   createBHoles();
   gameLoop();
+  ctx.restore();
 }
+
 
 function gameLoop() {
   frameID = requestAnimationFrame(gameLoop);
-  ctx.save();
   drawBackground();
+  drawgHole();
   drawWalls();
   drawBall();
   moveBall();
-  ctx.closePath();
   drawObsH();
   drawObsV();
   moveObsH();
@@ -129,10 +130,10 @@ function drawBall() {
 
 function moveBall() {
   if (y < h - 40) {
-    gravity = gravity += 0.02;
+    gravity += 0.02;
     y += gravity;
   }
-  if (gravity < 0.8 || y > 550) {
+  if (gravity || y > 550) {
     if (pressedLeft && x > 30 && moveLeft) {
       ballVx += ballAceleracion;
       x -= ballVx;
@@ -210,7 +211,7 @@ var arrayObstH = [];
 function createObsH() {
   var posObstY = 60;
   for (i = 0; i < 5; i++) {
-    arrayObstH.push(new ObstH(randomPos(0, w - 350), posObstY));
+    arrayObstH.push(new ObstH(randomPos(30, w - 350), posObstY));
     posObstY = arrayObstH[i].y;
     posObstY += 110;
     //debugger
@@ -313,6 +314,28 @@ function drawBHoles() {
   });
 }
 
+/* GREEN HOLE */
+
+
+
+function drawgHole() {
+  ctx.beginPath();
+  ctx.arc(562, 560, 18, 0, Math.PI * 2);
+  ctx.fillStyle = "green";
+  ctx.strokeStyle = "brownsmoke";
+  ctx.lineWidth = 5;
+  ctx.stroke();
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawGHoles() {
+  arrayBlackH.forEach(hole => {
+    hole.drawBH();
+  });
+}
+
+
 /* COLLISIONS */
 function moveObsH() {
   arrayObstH.forEach(obstH => {
@@ -331,24 +354,26 @@ function moveObsV() {
 function collisionH(xObs, yObs, wObs, hObs) {
   if (xObs < x && x < xObs + wObs && y + 15 > yObs && y < yObs + hObs) {
     gravity = -0.2;
-    y += gravity;
+
     isGravity = false;
     //cancelAnimationFrame(frameID);
     //gameOver();
   } else {
+    y += gravity;
     isGravity = true;
   }
 }
 
 function collisionV(xObs, yObs, wObs, hObs) {
-  if (x > xObs - 15 && x < xObs + wObs && y > yObs && y < yObs + hObs) {
+  if (x > xObs - 15 && x < xObs + wObs && y > yObs - 15 && y < yObs + hObs) {
+    gravity = 0
     moveRight = false;
   } else if (x > xObs - 30) {
     moveRight = true;
   }
   if (x > xObs + wObs && y > yObs && y < yObs + hObs) {
     moveLeft = false;
-  } else if (x > xObs - 80 + wObs) {
+  } else if (x > xObs - 100 + wObs) {
     moveLeft = true;
   }
 }
@@ -364,6 +389,12 @@ function distantBall() {
     if (distancia < 20) {
       cancelAnimationFrame(frameID);
       gameOver();
+    } else if (x > 550 && y > 560) {
+      cancelAnimationFrame(frameID);
+      arrayBlackH = []
+      arrayObstH = []
+      arrayObstV = []
+      startGame();
     }
   });
 }
