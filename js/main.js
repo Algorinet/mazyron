@@ -71,8 +71,8 @@ function startGame() {
 function gameLoop() {
   frameID = requestAnimationFrame(gameLoop);
   drawBackground();
-  drawgHole();
   drawWalls();
+  green.drawgHole();
   drawBall();
   moveBall();
   drawObsH();
@@ -300,7 +300,7 @@ function createBHoles() {
   for (i = 0; i < 5; i++) {
     var arrayPosX = [120, 240, 360, 480];
     var numXaleatorio = parseInt(Math.random() * arrayPosX.length);
-    var arrayPosY = [150, 260, 370, 480, 560];
+    var arrayPosY = [150, 260, 370, 480];
     var numYaleatorio = parseInt(Math.random() * arrayPosY.length);
     var posX = arrayPosX[numXaleatorio];
     var posY = arrayPosY[numYaleatorio];
@@ -316,24 +316,40 @@ function drawBHoles() {
 
 /* GREEN HOLE */
 
-
-
-function drawgHole() {
-  ctx.beginPath();
-  ctx.arc(562, 560, 18, 0, Math.PI * 2);
-  ctx.fillStyle = "green";
-  ctx.strokeStyle = "brownsmoke";
-  ctx.lineWidth = 5;
-  ctx.stroke();
-  ctx.fill();
-  ctx.closePath();
+class gHole {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.r = 18;
+    this.startAngle = 0;
+    this.endAngle = Math.PI * 2;
+  }
+  drawgHole() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, this.startAngle, this.endAngle);
+    ctx.fillStyle = "green";
+    ctx.strokeStyle = "brownsmoke";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.fill();
+    ctx.closePath();
+  }
 }
 
-function drawGHoles() {
-  arrayBlackH.forEach(hole => {
-    hole.drawBH();
-  });
+var posHGX = createGHole(x)
+var posHGY = 560
+console.log(posHGX)
+var green = new gHole(posHGX, posHGY)
+
+
+function createGHole(x) {
+  var arrayGreenH = [120, 240, 360, 480];
+  var numXaleatorio = parseInt(Math.random() * arrayGreenH.length);
+  var posX = arrayGreenH[numXaleatorio];
+  return posX
 }
+
+console.log(green)
 
 
 /* COLLISIONS */
