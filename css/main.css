@@ -17,22 +17,44 @@ h1 {
 
 #puntuacion {
   display: none;
-  background: blue;
+  background-image: url("../textures/madera.jpg");
 }
 
 #puntuacion ul li {
   text-align: center;
+  background: transparent;
+}
+
+#puntuacion.list-group-item {
+  background: rgba(165, 42, 42, 0.897)
 }
 
 span {
+  color: greenyellow;
   font-size: 4rem;
+  font-weight: bold;
+}
+
+#points {
+  font-size: 4rem;
+  color: greenyellow;
+  font-weight: bold;
+}
+
+#timer {
+  font-size: 4rem;
+  color: white;
   font-weight: bold;
 }
 
 #juego {
   text-align: center;
+  background-image: url("../textures/madera.jpg");
+  padding: 20px
 }
 
 #canvas {
   background-image: url("../textures/jaen-madera.png");
+  filter: sepia(0.6);
+  box-shadow: 0px 0px 26px 20px rgba(0, 0, 0, 0.93);
 }

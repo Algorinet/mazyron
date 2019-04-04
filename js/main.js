@@ -10,7 +10,7 @@ var pressedRight = false;
 var x;
 var y;
 var frameID;
-var score = 0;
+
 var wallX = 300;
 var wallY = 50;
 var ballVx = 0;
@@ -26,9 +26,15 @@ var vy = Math.random() * -10 - 5;
 var dx = 0.3;
 var dy = 0.3;
 var vy = Math.random() * -10 - 5;
+var ballInGreen = false;
+var score = 0;
+var minutes = 0
+var seconds = 20
+
 
 window.onload = function () {
   setup();
+  time();
 };
 
 function setup() {
@@ -56,13 +62,14 @@ function setCanvasDimensions() {
 function startGame() {
   ctx.save()
   document.querySelector("#start").style.display = "none";
-  document.querySelector("#puntuacion").style.display = "block";
+  document.querySelector("#puntuacion").style.display = "flex";
   setCanvasDimensions();
   x = w2;
   y = h2 / 8;
   createObsH();
   createObsV();
   createBHoles();
+  points();
   gameLoop();
   ctx.restore();
 }
@@ -82,6 +89,12 @@ function gameLoop() {
   drawBHoles();
   distantBall();
 }
+
+function points() {
+  var outputPoints = document.querySelector("#points")
+  return outputPoints.innerHTML = score
+}
+
 
 /* GAMEBOARD */
 
@@ -219,7 +232,6 @@ function createObsH() {
     posObstY += 110;
     //debugger
   }
-  console.log(arrayObstH[0]);
 }
 
 function drawObsH() {
@@ -262,7 +274,6 @@ function createObsV() {
     arrayObstV.push(new ObstV(posObstX, randomPos(100, 350)));
     posObstX = arrayObstV[i].x;
     posObstX += 120;
-    console.log(arrayObstV[i]);
   }
 }
 
@@ -317,6 +328,7 @@ function drawBHoles() {
   });
 }
 
+
 /* GREEN HOLE */
 
 class gHole {
@@ -341,7 +353,7 @@ class gHole {
 
 var posHGX = createGHole(x)
 var posHGY = 560
-console.log(posHGX)
+
 var green = new gHole(posHGX, posHGY)
 
 
@@ -352,7 +364,6 @@ function createGHole(x) {
   return posX
 }
 
-console.log(green)
 
 
 /* COLLISIONS */
@@ -373,7 +384,6 @@ function moveObsV() {
 function collisionH(xObs, yObs, wObs, hObs) {
   if (xObs < x && x < xObs + wObs && y + 15 > yObs && y < yObs + hObs) {
     gravity = -0.2;
-
     isGravity = false;
     //cancelAnimationFrame(frameID);
     //gameOver();
@@ -413,13 +423,17 @@ function distantBall() {
 
   });
   var distanciaToGreen = calcDistant(p1x, green.x, p1y, green.y)
-  console.log(distanciaToGreen)
+
   if (distanciaToGreen < 50) {
+    ballInGreen = true;
     cancelAnimationFrame(frameID);
+
+    seconds += 10;
+    score += 5
     arrayBlackH = []
     arrayObstH = []
     arrayObstV = []
-    startGame();
+    setup()
   }
 }
 
@@ -430,7 +444,29 @@ function gameOver() {
   ctx.rect(0, 0, w, h);
   ctx.fill();
   ctx.closePath();
-  // createText();
-  //createScore();
-  //finalScore();
+}
+
+
+/* TIME & POINTS SYSTEM*/
+function time() {
+
+  var outputTimer = document.querySelector("#timer")
+
+
+
+  var intervalTime = setInterval(() => {
+    if (--seconds < 0) {
+      seconds = 59
+      minutes--
+    }
+
+    if (!seconds && !minutes) {
+      clearInterval(intervalTime)
+      cancelAnimationFrame(frameID);
+      gameOver();
+    }
+    outputTimer.innerHTML = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+  }, 1000);
+
+  return intervalTime
 }
