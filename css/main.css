@@ -4,20 +4,47 @@ body {
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: 6rem;
 }
 
 
+h2 {
+  font-size: 3.5rem;
+  box-shadow: 0px 10px 26px 20px rgba(0, 0, 0, 0.93);
+  padding: 2%;
+}
+
+.bodystart {
+  background-image: url("../textures/mazyron.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bodygame {
+  background-image: url("../textures/gameBackground.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#start {
+  position: absolute;
+  margin-top: 30%;
+  background-color: transparent;
+  color: rgba(212, 226, 15, 0.664)
+}
 
 #titulo {
-  margin-top: 2%;
-  text-align: center;
-  background: red;
+  padding-right: 15%;
+  display: block;
+  text-align: center
 }
 
-#puntuacion {
+
+
+#game {
+  margin-top: 100px;
   display: none;
-  background-image: url("../textures/madera.jpg");
+
 }
 
 #puntuacion ul li {
@@ -37,7 +64,7 @@ span {
 
 #points {
   font-size: 4rem;
-  color: greenyellow;
+  color: rgb(173, 255, 47);
   font-weight: bold;
 }
 
@@ -49,7 +76,7 @@ span {
 
 #juego {
   text-align: center;
-  background-image: url("../textures/madera.jpg");
+
   padding: 20px
 }
 
@@ -57,4 +84,8 @@ span {
   background-image: url("../textures/jaen-madera.png");
   filter: sepia(0.6);
   box-shadow: 0px 0px 26px 20px rgba(0, 0, 0, 0.93);
+}
+
+#score {
+  display: none;
 }

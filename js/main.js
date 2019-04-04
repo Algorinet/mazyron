@@ -38,6 +38,8 @@ window.onload = function () {
 };
 
 function setup() {
+  document.getElementById("start").addEventListener("click", startGame);
+
   canvas = document.querySelector("#canvas");
   ctx = canvas.getContext("2d");
   document.onkeydown = handlerDown;
@@ -46,8 +48,8 @@ function setup() {
     setCanvasDimensions();
   };
 
-  //document.getElementById("start").addEventListener("click", startGame);
-  startGame();
+
+
 }
 
 function setCanvasDimensions() {
@@ -60,8 +62,9 @@ function setCanvasDimensions() {
 }
 
 function startGame() {
-  ctx.save()
+  document.getElementById("game").style = "display:block"
   document.querySelector("#start").style.display = "none";
+  ctx.save()
   document.querySelector("#puntuacion").style.display = "flex";
   setCanvasDimensions();
   x = w2;
@@ -101,9 +104,7 @@ function points() {
 function drawBackground() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  // ctx.fillStyle = "#e0b126"
   ctx.rect(0, 0, w, h);
-  //ctx.fill();
   ctx.restore();
 }
 
@@ -342,8 +343,8 @@ class gHole {
   drawgHole() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r, this.startAngle, this.endAngle);
-    ctx.fillStyle = "green";
-    ctx.strokeStyle = "brownsmoke";
+    ctx.fillStyle = "yellow";
+    ctx.strokeStyle = "brown";
     ctx.lineWidth = 5;
     ctx.stroke();
     ctx.fill();
@@ -433,7 +434,7 @@ function distantBall() {
     arrayBlackH = []
     arrayObstH = []
     arrayObstV = []
-    setup()
+    startGame()
   }
 }
 

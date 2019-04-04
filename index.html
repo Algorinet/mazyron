@@ -14,40 +14,51 @@
 
 </head>
 
-<body>
+<body class="bodystart">
 
 
-  <div class="container">
+  <div class="container bodygame" id="container">
 
     <div class="row" id="titulo">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="game-board">
         <button id="start">
-          <h1>Comenzar</h1>
+          <h1>Empezar</h1>
         </button>
       </div>
     </div>
-    <div class="row" id="puntuacion">
-      <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-        <ul class="list-group">
-          <li class="list-group-item active">
-            <h2>Puntuación</h2>
-          </li>
-          <li class="list-group-item disabled" aria-disabled="true" id="points"><span>0</span></li>
-        </ul>
+    <div id="game">
+      <div class="row" id="puntuacion">
+        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <ul class="list-group">
+            <li class="list-group-item active">
+              <h2>Puntuación</h2>
+            </li>
+            <li class="list-group-item disabled" aria-disabled="true" id="points"><span>0</span></li>
+          </ul>
+        </div>
+        <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <ul class="list-group">
+            <li class="list-group-item active">
+              <h2>Tiempo</h2>
+            </li>
+            <li class="list-group-item disabled" aria-disabled="true" id="timer"><span>0</span></li>
+          </ul>
+        </div>
       </div>
-      <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-        <ul class="list-group">
-          <li class="list-group-item active">
-            <h2>Tiempo</h2>
-          </li>
-          <li class="list-group-item disabled" aria-disabled="true" id="timer"><span>0</span></li>
-        </ul>
+      <div class="row" id="juego">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="game-board">
+          <div id="game-board"></div>
+          <canvas id="canvas"></canvas>
+        </div>
       </div>
     </div>
-    <div class="row" id="juego">
+
+    <div class="row" id="score">
       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="game-board">
-        <div id="game-board"></div>
-        <canvas id="canvas"></canvas>
+        <div id="finalGame">
+          <H1>GAME OVER</H1>
+        </div>
+
       </div>
     </div>
   </div>
