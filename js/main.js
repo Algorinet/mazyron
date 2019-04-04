@@ -133,6 +133,9 @@ function moveBall() {
     gravity += 0.02;
     y += gravity;
   }
+  if (y > h - 45) {
+    gravity = 0;
+  }
   if (gravity || y > 550) {
     if (pressedLeft && x > 30 && moveLeft) {
       ballVx += ballAceleracion;
@@ -396,7 +399,7 @@ function collisionV(xObs, yObs, wObs, hObs) {
 
 /* COLLISION BALL AND HOLES */
 function distantBall() {
-  var p1x = x;
+  var p1x = parseInt(x);
   var p1y = parseInt(y);
   arrayBlackH.forEach(bHole => {
     var p2x = bHole.x;
@@ -405,14 +408,19 @@ function distantBall() {
     if (distancia < 20) {
       cancelAnimationFrame(frameID);
       gameOver();
-    } else if (x > 550 && y > 560) {
-      cancelAnimationFrame(frameID);
-      arrayBlackH = []
-      arrayObstH = []
-      arrayObstV = []
-      startGame();
     }
+
+
   });
+  var distanciaToGreen = calcDistant(p1x, green.x, p1y, green.y)
+  console.log(distanciaToGreen)
+  if (distanciaToGreen < 50) {
+    cancelAnimationFrame(frameID);
+    arrayBlackH = []
+    arrayObstH = []
+    arrayObstV = []
+    startGame();
+  }
 }
 
 /* GAME OVER */
