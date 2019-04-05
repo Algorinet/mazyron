@@ -45,3 +45,7 @@ El que funcione el juego ya es un logro, al ser el primer juego que hago sin usa
 
 Agradecer a nuestros TA´s (Sito, Sandra y Ruben) por estar siempre apoyándonos, a los compis tan geniales que me han tocado y a nuestro profe Dani Vicario, no por su profesionalidad, que le sobra, sino por la pasión que pone en hacernos ver que la programación web es un mundo espectacular que apenas hemos empezado a aprender.
 **¡¡¡GRACIAS A TODOOSSSSSSSS!!!**
+
+# _DEMO DE MAZYRON_
+
+https://algorinet.github.io/mazyron/

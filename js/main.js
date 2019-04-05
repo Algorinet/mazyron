@@ -31,6 +31,10 @@ var score = 0;
 var minutes = 0
 var seconds = 20
 
+var audio = new Audio("../audio/song.mp3");
+
+
+
 
 window.onload = function () {
   setup();
@@ -63,6 +67,7 @@ function setCanvasDimensions() {
 
 function startGame() {
   ctx.save()
+  playAudio();
   document.querySelector("#body").classList.toggle("bodygame");
   document.getElementById("game").style = "display:block"
   document.querySelector("#start").style.display = "none";
@@ -76,6 +81,7 @@ function startGame() {
   points();
   gameLoop();
   ctx.restore();
+
 }
 
 
@@ -447,15 +453,18 @@ function gameOver() {
   ctx.fill();
   ctx.closePath();
   setTimeout(() => {
+
     scoreScreen();
   }, 1000);
+  audioStop();
 }
 
 function scoreScreen() {
+  var totalScore = score;
   document.getElementById("game").style.display = "none";
   document.querySelector("#body").classList.toggle("bodyscore");
   document.querySelector("#score").style.display = "block";
-  document.getElementById("puntuacion").innerHTML = score;
+  document.getElementById("puntuacionFinal").innerHTML = totalScore;
 }
 
 /* TIME & POINTS SYSTEM*/
@@ -480,4 +489,14 @@ function time() {
   }, 1000);
 
   return intervalTime
+}
+
+/* AUDIIO */
+
+function playAudio() {
+  audio.play();
+}
+
+function audioStop() {
+  audio.pause();
 }
