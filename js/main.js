@@ -62,9 +62,10 @@ function setCanvasDimensions() {
 }
 
 function startGame() {
+  ctx.save()
+  document.querySelector("#body").classList.toggle("bodygame");
   document.getElementById("game").style = "display:block"
   document.querySelector("#start").style.display = "none";
-  ctx.save()
   document.querySelector("#puntuacion").style.display = "flex";
   setCanvasDimensions();
   x = w2;
@@ -445,8 +446,17 @@ function gameOver() {
   ctx.rect(0, 0, w, h);
   ctx.fill();
   ctx.closePath();
+  setTimeout(() => {
+    scoreScreen();
+  }, 1000);
 }
 
+function scoreScreen() {
+  document.getElementById("game").style.display = "none";
+  document.querySelector("#body").classList.toggle("bodyscore");
+  document.querySelector("#score").style.display = "block";
+  document.getElementById("puntuacion").innerHTML = score;
+}
 
 /* TIME & POINTS SYSTEM*/
 function time() {
